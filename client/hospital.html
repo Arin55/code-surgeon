@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hospital | MediCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar container">
+      <a href="index.html" class="brand"><i class="fa-solid fa-heart-pulse"></i><span>MediCare</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="#">Hospital</a></li>
+        <li><a href="login.html" id="loginLink">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="page-bar">
+        <button id="backBtn" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        <div class="spacer"></div>
+      </div>
+      <div id="hospitalCard" class="card"></div>
+      <div class="card" style="margin-top:16px;">
+        <h3>Request an appointment</h3>
+        <form id="apptForm">
+          <div class="form-row">
+            <label>Service</label>
+            <select id="service" required>
+              <option value="">Select service</option>
+              <option>Doctor consultation</option>
+              <option>Medical tests</option>
+              <option>General visit</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Phone</label>
+            <input type="tel" id="phone" placeholder="Your phone number" />
+          </div>
+          <div class="form-row">
+            <label>Profession (optional)</label>
+            <input type="text" id="profession" placeholder="e.g., Student, Engineer" />
+          </div>
+          <div class="form-row">
+            <label>Date</label>
+            <input type="date" id="date" />
+          </div>
+          <div class="form-row">
+            <label>Time</label>
+            <input type="time" id="time" />
+          </div>
+          <div class="form-row">
+            <textarea id="notes" rows="3" placeholder="Reason for appointment / symptoms"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send Request</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/hospital.js"></script>
+</body>
+</html>

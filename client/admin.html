@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard | MediCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .side { background:#0f2a4a; color:#e6f1ff; padding:16px; }
+    .side .brand { font-weight:700; margin-bottom: 12px; display:flex; gap:8px; align-items:center; }
+    .side a { color:#cfe3ff; text-decoration:none; display:flex; gap:10px; align-items:center; padding:10px 12px; border-radius:10px; }
+    .side a.active, .side a:hover { background:#0b2442; color:#fff; }
+    .content { padding:18px; }
+    .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .grid { display:grid; gap:12px; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .side { position: sticky; top:0; z-index: 5; } }
+    .table { width:100%; border-collapse: collapse; background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .table th, .table td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; }
+    .toolbar { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .muted-sm { color:#64748b; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="mobile-topbar">
+    <button id="mobMenuBtn" class="menu-btn"><i class="fa-solid fa-bars"></i></button>
+    <div style="font-weight:700;">Admin</div>
+    <button class="menu-btn" title="Notifications" style="position:relative;">
+      <i class="fa-solid fa-bell"></i>
+      <span id="notifCount" style="display:none; position:absolute; top:-4px; right:-4px; background:#ef4444; color:#fff; border-radius:999px; padding:2px 6px; font-size:10px;">0</span>
+    </button>
+  </div>
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand"><i class="fa-solid fa-shield-halved"></i> <span>Admin</span></div>
+      <nav class="nav">
+        <a href="#dashboard" data-link class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="#appointments" data-link><i class="fa-solid fa-calendar-check"></i> Appointments</a>
+        <a href="#patients" data-link><i class="fa-solid fa-users"></i> Patients</a>
+        <a href="#reports" data-link><i class="fa-solid fa-file-arrow-up"></i> Reports</a>
+        <a href="#notes" data-link><i class="fa-solid fa-note-sticky"></i> Notes</a>
+        <a href="#orders" data-link><i class="fa-solid fa-capsules"></i> Orders</a>
+        <a href="#emergency" data-link><i class="fa-solid fa-triangle-exclamation"></i> Emergency</a>
+        <a href="#medicines" data-link><i class="fa-solid fa-pills"></i> Medicines</a>
+        <a href="#hospitals" data-link><i class="fa-solid fa-hospital"></i> Hospitals</a>
+        <a href="#logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <section id="dashboard" class="card">
+        <div class="section-header"><h2>Overview</h2></div>
+        <div class="grid" style="grid-template-columns: repeat(4,1fr);">
+          <div class="card"><h3>Appointments</h3><div id="aStat" class="muted">--</div></div>
+          <div class="card"><h3>Patients</h3><div id="pStat" class="muted">--</div></div>
+          <div class="card"><h3>Orders</h3><div id="oStat" class="muted">--</div></div>
+          <div class="card"><h3>Emergency</h3><div id="eStat" class="muted">--</div></div>
+        </div>
+        <div style="margin-top:16px;">
+          <h3>Services we support</h3>
+          <div class="grid" style="grid-template-columns: repeat(3,1fr); gap:12px;">
+            <div class="card"><h4>Doctor consultation</h4><p class="muted">Book consultations with hospitals for general or specialist care.</p></div>
+            <div class="card"><h4>Medical tests</h4><p class="muted">Pathology, imaging, and routine checkups supported.</p></div>
+            <div class="card"><h4>General visit</h4><p class="muted">Visit hospitals for non-emergency medical needs.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="appointments" class="card" style="display:none;">
+        <div class="section-header"><h2>Appointments</h2></div>
+        <table class="table" id="apptTable"><thead><tr><th>Patient</th><th>Hospital</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="patients" class="card" style="display:none;">
+        <div class="section-header"><h2>Patients</h2></div>
+        <table class="table" id="patTable"><thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="reports" class="card" style="display:none;">
+        <div class="section-header"><h2>Upload Report</h2></div>
+        <form id="reportForm" class="row">
+          <select id="reportPatient" required></select>
+          <select id="reportHospital"></select>
+          <input type="file" id="reportFile" required />
+          <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+        <p class="muted-sm">Tip: choose a patient from the list populated from appointments.</p>
+      </section>
+
+      <section id="notes" class="card" style="display:none;">
+        <div class="section-header"><h2>Add Note/Reminder</h2></div>
+        <form id="noteForm" class="row">
+          <select id="notePatient" required></select>
+          <input id="noteText" placeholder="Note or reminder text" required />
+          <input type="datetime-local" id="noteDue" />
+          <select id="noteType">
+            <option value="note">Note</option>
+            <option value="reminder">Reminder</option>
+          </select>
+          <button class="btn btn-primary" type="submit">Add</button>
+        </form>
+      </section>
+
+      <section id="orders" class="card" style="display:none;">
+        <div class="section-header"><h2>Medicine Orders</h2></div>
+        <table class="table" id="orderTable"><thead><tr><th>Patient</th><th>Items</th><th>Status</th><th>Action</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="emergency" class="card" style="display:none;">
+        <div class="section-header"><h2>Emergency Alerts</h2></div>
+        <table class="table" id="emgTable"><thead><tr><th>Name</th><th>Phone</th><th>Message</th><th>Status</th><th>Action</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="hospitals" class="card" style="display:none;">
+        <div class="section-header"><h2>Hospitals</h2></div>
+        <form id="addHospitalForm" class="grid" style="grid-template-columns: repeat(2,1fr); gap:10px; margin-bottom:10px;">
+          <input id="hName" placeholder="Name" required />
+          <input id="hCity" placeholder="City" />
+          <input id="hState" placeholder="State" />
+          <input id="hPhone" placeholder="Contact (phone)" />
+          <input id="hImage" placeholder="Image URL" style="grid-column: span 2;" />
+          <input id="hServices" placeholder="Services (comma-separated)" style="grid-column: span 2;" />
+          <textarea id="hDesc" rows="2" placeholder="Description" style="grid-column: span 2;"></textarea>
+          <div style="grid-column: span 2;">
+            <button class="btn btn-primary" type="submit">Add Hospital</button>
+          </div>
+        </form>
+        <div id="hGrid" class="grid-cards"></div>
+      </section>
+
+      <section id="medicines" class="card" style="display:none;">
+        <div class="section-header"><h2>Medicines</h2></div>
+        <form id="addMedForm" class="grid" style="grid-template-columns: repeat(3,1fr); gap:10px; margin-bottom:10px;">
+          <input id="mName" placeholder="Name" required />
+          <input id="mPrice" type="number" placeholder="Price" />
+          <input id="mUnit" placeholder="Unit (e.g., strip, bottle)" />
+          <input id="mStock" type="number" placeholder="Stock" />
+          <input id="mImage" placeholder="Image URL" />
+          <input id="mRating" type="number" step="0.1" min="0" max="5" placeholder="Rating (0-5)" />
+          <input id="mDesc" placeholder="Description" style="grid-column: span 3;" />
+          <div style="grid-column: span 3;">
+            <button class="btn btn-primary" type="submit">Add Medicine</button>
+          </div>
+        </form>
+        <div id="medList" class="grid" style="grid-template-columns: repeat(3,1fr);"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | MediCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <h3 class="auth-title">LOGIN</h3>
+    <form id="loginForm" class="auth-form">
+      <div class="form-row auth-input">
+        <i class="fa-solid fa-user"></i>
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+      <div class="form-row auth-input">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="password" placeholder="Password" required />
+      </div>
+      <div class="auth-actions">
+        <button class="btn btn-primary btn-block" type="submit">LOGIN</button>
+      </div>
+      <div class="auth-footer">
+        <a class="auth-link" href="#">Forgot Password?</a>
+        <div style="margin-top:8px;">
+          <a class="auth-link" href="register.html">Create an account</a>
+        </div>
+        <p class="auth-subtle" style="margin:8px 0 0">Admin (seed): admin@hospital.com / Admin@12345</p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Forgot Password Modal (UI only) -->
+  <div id="forgotModal" class="modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <button class="modal-close" id="forgotClose" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h3>Forgot Password</h3>
+      <p class="muted">Enter your email and we'll send reset instructions if the account exists.</p>
+      <form id="forgotForm">
+        <div class="form-row"><input type="email" id="forgotEmail" placeholder="Your email" required /></div>
+        <button type="submit" class="btn btn-primary btn-block">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

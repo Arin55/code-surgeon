@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediCare | Find Hospitals & Book Appointments</title>
+  <meta name="description" content="Search hospitals, book appointments, view reports, and manage reminders." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar container">
+      <a href="index.html" class="brand">
+        <i class="fa-solid fa-heart-pulse"></i>
+        <span>MediCare</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a class="active" href="index.html">Home</a></li>
+        <li><a href="#hospitals">Hospitals</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li id="navLogin"><a class="btn btn-outline" href="login.html">Login</a></li>
+        <li id="navRegister"><a class="btn btn-primary" href="register.html">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1>Find trusted hospitals near you</h1>
+        <p>Search by name, location, or service and request an appointment in minutes.</p>
+        <div class="search-bar">
+          <input id="searchInput" type="text" placeholder="Search hospitals, e.g., Apollo Delhi or Blood Test" />
+          <button id="searchBtn" class="btn btn-primary">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+        </div>
+        <div class="quick-tags" aria-label="Popular services">
+          <button class="chip" data-q="Doctor consultation">Doctor consultation</button>
+          <button class="chip" data-q="Medical tests">Medical tests</button>
+          <button class="chip" data-q="General visit">General visit</button>
+        </div>
+      </div>
+      <div class="hero-ill">
+        <img src="assets/hero-medical.svg" alt="Medical care illustration" onerror="this.style.display='none'"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="container">
+      <h2 class="section-title">Services we support</h2>
+      <div class="cards-3">
+        <div class="card">
+          <div class="icon"><i class="fa-solid fa-user-doctor"></i></div>
+          <h3>Doctor consultation</h3>
+          <p>Book consultations with hospitals for general or specialist care.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><i class="fa-solid fa-flask"></i></div>
+          <h3>Medical tests</h3>
+          <p>Pathology, imaging, and routine checkups supported.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><i class="fa-solid fa-hospital"></i></div>
+          <h3>General visit</h3>
+          <p>Visit hospital for non-emergency medical needs and queries.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="hospitals">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Hospitals</h2>
+      </div>
+      <div id="hospitalGrid" class="grid-cards">
+        <div class="loading">Loading hospitals…</div>
+      </div>
+    </div>
+  </section>
+
+  <button id="emergencyBtn" class="fab fab-danger" aria-label="Emergency">
+    <i class="fa-solid fa-ambulance"></i>
+    <span>Emergency</span>
+  </button>
+
+  <div id="emergencyModal" class="modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h3>Emergency Request</h3>
+      <p>Enter details so the hospital admin can reach you immediately.</p>
+      <form id="emergencyForm">
+        <div class="form-row">
+          <input id="emgName" type="text" placeholder="Your name" required />
+        </div>
+        <div class="form-row">
+          <input id="emgPhone" type="tel" placeholder="Phone number" required />
+        </div>
+        <div class="form-row">
+          <textarea id="emgMsg" placeholder="Describe emergency" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger btn-block">Send Alert</button>
+      </form>
+      <small class="muted">Your alert will be visible to hospital admins.</small>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand muted">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <span>MediCare</span>
+        </div>
+        <p>Connecting patients to hospitals with simple and secure booking.</p>
+      </div>
+      <div>
+        <h4>Quick links</h4>
+        <ul class="list">
+          <li><a href="#hospitals">Hospitals</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul class="list">
+          <li>Email: support@medicare.app</li>
+          <li>Phone: +91-00000-00000</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy muted">© <span id="year"></span> MediCare. All rights reserved.</div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

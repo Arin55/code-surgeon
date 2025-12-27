@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patient Dashboard | MediCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .side { background:#0f2a4a; color:#e6f1ff; padding:16px; }
+    .side .brand { font-weight:700; margin-bottom: 12px; display:flex; gap:8px; align-items:center; }
+    .side a { color:#cfe3ff; text-decoration:none; display:flex; gap:10px; align-items:center; padding:10px 12px; border-radius:10px; }
+    .side a.active, .side a:hover { background:#0b2442; color:#fff; }
+    .content { padding:18px; }
+    .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .grid { display:grid; gap:12px; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .side { position: sticky; top:0; z-index: 5; } }
+    .table { width:100%; border-collapse: collapse; background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .table th, .table td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; }
+    .toolbar { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+    .toolbar.center { justify-content: center; }
+    .toolbar.center input { min-width: 320px; max-width: 520px; }
+
+    /* Rounded search bar */
+    .search-wrap { display:flex; align-items:center; background:#fff; border-radius:999px; padding:8px 8px 8px 12px; box-shadow: 0 8px 20px rgba(15,42,74,0.15); border:1px solid var(--border); }
+    .search-wrap i { color:#64748b; margin-right:8px; }
+    .search-wrap input { border:0; outline:0; padding:8px 10px; width: 100%; min-width: 0; }
+    .search-wrap button { margin-left:8px; border:0; background:#0f2a4a; color:#e6f1ff; padding:10px 16px; border-radius:10px; font-weight:600; cursor:pointer; }
+    @media (max-width: 640px){ .search-wrap input { min-width: 220px; } }
+  </style>
+</head>
+<body>
+  <div class="mobile-topbar">
+    <button id="mobMenuBtn" class="menu-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <div class="title">Patient</div>
+    <button id="pNotifBell" class="menu-btn" title="Notifications" style="position:relative;">
+      <i class="fa-solid fa-bell"></i>
+      <span id="pNotifCount" style="display:none; position:absolute; top:-4px; right:-4px; background:#ef4444; color:#fff; border-radius:999px; padding:2px 6px; font-size:10px;">0</span>
+    </button>
+  </div>
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand"><i class="fa-solid fa-user"></i> <span id="userName">Patient</span></div>
+      <nav class="nav">
+        <a href="#dash" data-link class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="#hospitals" data-link><i class="fa-solid fa-hospital"></i> Hospitals</a>
+        <a href="#appointments" data-link><i class="fa-solid fa-calendar-check"></i> My Appointments</a>
+        <a href="#medicines" data-link><i class="fa-solid fa-capsules"></i> Medicines</a>
+        <a href="#orders" data-link><i class="fa-solid fa-bag-shopping"></i> Orders</a>
+        <a href="#reports" data-link><i class="fa-solid fa-file-medical"></i> Reports</a>
+        <a href="#notes" data-link><i class="fa-solid fa-bell"></i> Notes/Reminders</a>
+        <a href="#profile" data-link><i class="fa-solid fa-id-card"></i> Profile</a>
+        <a href="#contact" data-link><i class="fa-solid fa-phone"></i> Contact / Emergency</a>
+        <a href="#logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
+    </aside>
+    <main class="content">
+
+      <section id="dash" class="card">
+        <div class="section-header" style="justify-content:space-between;align-items:center;">
+          <h2>Welcome</h2>
+          <button id="pNotifBellDesk" class="btn btn-outline" title="Notifications" style="position:relative;">
+            <i class="fa-solid fa-bell"></i>
+            <span id="pNotifCountDesk" style="display:none; position:absolute; top:-6px; right:-6px; background:#ef4444; color:#fff; border-radius:999px; padding:2px 6px; font-size:10px;">0</span>
+          </button>
+        </div>
+        <p class="muted">Use the quick actions to get started quickly.</p>
+        <div id="qaBar" class="quick-actions" style="margin-bottom:12px;">
+          <button class="btn btn-primary" data-go="#hospitals"><i class="fa-solid fa-calendar-plus"></i> Book Appointment</button>
+          <button class="btn btn-outline" data-go="#medicines"><i class="fa-solid fa-capsules"></i> Browse Medicines</button>
+          <button class="btn btn-outline" data-go="#reports"><i class="fa-solid fa-file-medical"></i> View Reports</button>
+          <button class="btn btn-danger" data-go="#contact"><i class="fa-solid fa-triangle-exclamation"></i> Emergency</button>
+        </div>
+        <div class="grid grid-3">
+          <div class="card"><h3>Appointments</h3><div id="statAppts" class="muted">--</div><div id="recentAppts" class="muted-sm"></div></div>
+          <div class="card"><h3>Reports</h3><div id="statReports" class="muted">--</div><div id="recentReports" class="muted-sm"></div></div>
+          <div class="card"><h3>Orders</h3><div id="statOrders" class="muted">--</div><div id="tipsBox" class="muted-sm"></div></div>
+        </div>
+        <div style="margin-top:16px;">
+          <h3>Services we support</h3>
+          <div class="grid grid-3">
+            <div class="card"><h4>Doctor consultation</h4><p class="muted">Book consultations with hospitals for general or specialist care.</p></div>
+            <div class="card"><h4>Medical tests</h4><p class="muted">Pathology, imaging, and routine checkups supported.</p></div>
+            <div class="card"><h4>General visit</h4><p class="muted">Visit hospitals for non-emergency medical needs.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="hospitals" class="card" style="display:none;">
+        <div class="section-header" style="justify-content:center;">
+          <form id="hSearchForm" class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="hSearch" placeholder="Search hospitals by name, city or service" />
+            <button type="submit">SEARCH</button>
+          </form>
+        </div>
+        <div id="hGrid" class="grid-cards"></div>
+      </section>
+
+      <section id="appointments" class="card" style="display:none;">
+        <div class="section-header"><h2>My Appointments</h2></div>
+        <table class="table" id="apptTable"><thead><tr><th>Hospital</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="medicines" class="card" style="display:none;">
+        <div class="section-header" style="justify-content:space-between;">
+          <form id="mSearchForm" class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="mSearch" placeholder="Search medicines by name" />
+            <button type="submit">SEARCH</button>
+          </form>
+          <div class="row">
+            <button id="cartBtn" class="btn btn-outline"><i class="fa-solid fa-cart-shopping"></i> Cart <span id="cartCount" class="muted" style="margin-left:6px;">0</span></button>
+            <button id="checkoutBtn" class="btn btn-primary">Checkout</button>
+          </div>
+        </div>
+        <div id="medGrid" class="grid-cards"></div>
+      </section>
+
+      <section id="orders" class="card" style="display:none;">
+        <div class="section-header"><h2>My Orders</h2></div>
+        <table class="table" id="orderTable"><thead><tr><th>Items</th><th>Status</th><th>Placed</th><th>Action</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <!-- Cancel Order Modal -->
+      <div id="orderModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); align-items:center; justify-content:center; z-index:50;">
+        <div style="background:#fff; border-radius:12px; padding:16px; width:90%; max-width:480px; box-shadow:0 12px 30px rgba(0,0,0,0.2);">
+          <h3 style="margin-top:0;">Cancel Order</h3>
+          <div id="omItems" class="muted" style="margin-bottom:12px;"></div>
+          <div id="omStatus" class="muted-sm" style="margin-bottom:12px;"></div>
+          <div class="row" style="justify-content:flex-end;">
+            <button id="omClose" class="btn btn-outline">Close</button>
+            <button id="omConfirm" class="btn btn-danger">Confirm Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <section id="reports" class="card" style="display:none;">
+        <div class="section-header"><h2>Reports</h2></div>
+        <table class="table" id="repTable"><thead><tr><th>Name</th><th>Uploaded</th><th>Action</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="notes" class="card" style="display:none;">
+        <div class="section-header"><h2>Notes / Reminders</h2></div>
+        <form id="reminderForm" class="grid" style="grid-template-columns: repeat(4, 1fr); gap:10px; align-items:end; margin-bottom:10px;">
+          <div>
+            <label class="muted">Medicine name</label>
+            <input id="rMed" placeholder="e.g., Paracetamol 500mg" required />
+          </div>
+          <div>
+            <label class="muted">Start date</label>
+            <input type="date" id="rStart" required />
+          </div>
+          <div>
+            <label class="muted">End date</label>
+            <input type="date" id="rEnd" />
+          </div>
+          <div>
+            <label class="muted">Time</label>
+            <input type="time" id="rTime" required />
+          </div>
+          <div style="grid-column: 1 / -1; display:flex; gap:8px; align-items:center;">
+            <input id="rText" placeholder="Optional note (e.g., after meals)" style="flex:1;" />
+            <button class="btn btn-primary" type="submit">Add Reminder</button>
+          </div>
+        </form>
+        <table class="table" id="noteTable"><thead><tr><th>Type</th><th>Text</th><th>Due</th><th>Added</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="profile" class="card" style="display:none;">
+        <div class="section-header"><h2>Profile</h2></div>
+        <form id="profileForm" class="grid" style="grid-template-columns: repeat(2,1fr); gap:12px; max-width:780px;">
+          <div class="form-row" style="grid-column: span 2;">
+            <label class="muted">Full Name</label>
+            <input id="prName" placeholder="Your name" required />
+          </div>
+          <div class="form-row">
+            <label class="muted">Email</label>
+            <input id="prEmail" disabled />
+          </div>
+          <div class="form-row">
+            <label class="muted">Phone</label>
+            <input id="prPhone" placeholder="Phone" />
+          </div>
+          <div class="form-row" style="grid-column: span 2;">
+            <label class="muted">Address</label>
+            <input id="prAddress" placeholder="Address" />
+          </div>
+          <div class="form-row" style="grid-column: span 2;">
+            <label class="muted">New Password (optional)</label>
+            <input id="prPassword" type="password" placeholder="Leave blank to keep current" />
+          </div>
+          <div style="grid-column: span 2; display:flex; gap:10px;">
+            <button class="btn btn-primary" type="submit">Save Changes</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="contact" class="card" style="display:none;">
+        <div class="section-header"><h2>Contact / Emergency</h2></div>
+        <p class="muted">For urgent help, use the emergency request below.</p>
+        <form id="emgForm" style="max-width:520px;">
+          <div class="form-row"><input id="emgName" placeholder="Your Name" required /></div>
+          <div class="form-row"><input id="emgPhone" placeholder="Phone" required /></div>
+          <div class="form-row"><textarea id="emgMsg" placeholder="Describe emergency" rows="3" required></textarea></div>
+          <button class="btn btn-danger" type="submit">Send Emergency Alert</button>
+        </form>
+      </section>
+    </main>
+  </div>
+  <button id="emgFab" class="fab fab-danger"><i class="fa-solid fa-triangle-exclamation"></i> Emergency</button>
+  <script src="js/patient.js"></script>
+</body>
+</html>
